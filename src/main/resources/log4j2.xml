@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration strict="true">
+
+  <Properties>
+    <Property name="baseDir">/log/mywebservice</Property>
+    <Property name="prefix">administrator-ThinkPad-L450</Property>
+  </Properties>
+
+  <Appenders>
+    <RollingFile name="APP_FILE" fileName="${baseDir}/${prefix}_application.log"
+      filePattern="${baseDir}/archive/${prefix}_application-%d{yyyy-MM-dd}-%i.log.gz">
+      <JSONLayout complete="false" compact="true" eventEol="true" properties="true"/>
+      <Policies>
+        <TimeBasedTriggeringPolicy/>
+        <SizeBasedTriggeringPolicy size="200 MB"/>
+      </Policies>
+    </RollingFile>
+
+    <RollingFile name="DEBUG_FILE" fileName="${baseDir}/${prefix}_debug.log"
+      filePattern="${baseDir}/archive/${prefix}_debug-%d{yyyy-MM-dd}-%i.log.gz">
+      <PatternLayout>
+        <pattern>
+          [%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %X{Session-Token} - %msg%n
+        </pattern>
+      </PatternLayout>
+      <Policies>
+        <TimeBasedTriggeringPolicy/>
+        <SizeBasedTriggeringPolicy size="200 MB"/>
+      </Policies>
+    </RollingFile>
+
+  </Appenders>
+
+  <Loggers>
+    <Logger name="org.springframework.soap" level="INFO"/>
+
+    <Logger name="org.springframework" level="INFO"/>
+
+    <Root level="INFO">
+      <AppenderRef ref="APP_FILE"/>
+      <AppenderRef ref="DEBUG_FILE"/>
+    </Root>
+  </Loggers>
+
+</Configuration>
